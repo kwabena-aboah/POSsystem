@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{ title }} | {% block title %}JKF-VICTORY LIMITED{% endblock %}</title>
+	{% block link %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+	{% endblock %}
+	{% block meta %}
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
+	{% endblock %}
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand" href="{% url 'order' %}">JKF-VICTORY LIMITED</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" data-toggle="modal" data-target="#CodeModal">Search</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" data-toggle="modal" data-target="#clearModal">Clear Order</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Payment
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" role='menu'>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#cashModal">Cash</a>
+                            <a class="dropdown-item" href="#" onclick="app.payed('momo');">Momo</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'list-client' %}">Manage Customer</a>
+                    </li>
+                    {% if request.user.is_staff %}
+                    <li class="nav-item">
+                        <a id="resetcashpopover" tabindex="0" class="nav-link active dropdown-toggle" role="button" data-toggle="popover" data-placement="bottom"  title="Reset Cash"
+                           style="cursor:pointer;"
+                           data-content="<div class='row'><div class='col-md-12 form-group'><input class='form-control' type='number' value='0' id='resetcashinput' step='0.01'></a></div></div>
+                               <div class='row' style='margin-top:1em;'><div class='col-md-12'><button type='button' class='btn btn-primary' onclick='app.resetCash();'>Reset</button></div></div>">
+                            Reset Cash
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'view_stock' %}" class="nav-link active" title="View Stock" style="cursor:pointer;">View Stock</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'admin:index' %}">Admin</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" data-toggle="modal" data-target="#logoutmodal">Log Out</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div id="cashresetdiv" class="alert alert-success alert-dismissable" style="display:none;" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            Successfully reset the cash amount to {{ currency }}<span id="cashresetamount"></span>.
+        </div>
+        {% include 'messages.html' %}
+        <div id="app">
+		{% block content %}
+
+		{% endblock %}
+
+		<div class="modal" id="CodeModal" tabindex="-1" role="dialog" aria-labelledby="codeModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <form action="javascript:void(0);">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Enter by name</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input id="codeInput" class="form-control" name="code" type="text" value="" autofocus="autofocus" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" @click="scanCode">Add</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal" id="clearModal" tabindex="-1" role="dialog" aria-labelledby="clearModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Are you sure you want to clear this order?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" data-dismiss="modal" v-on:click="reset">Clear it</button>
+                        <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Change modal -->
+        <div class="modal" id="cashModal" tabindex="-1" role="dialog" aria-labelledby="cashModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Cash Payment Checkpoint</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="">
+                            <div class="form-group">
+                                <label for="topay">To pay</label>
+                                <input id="topay" class="form-control" name="" type="number" value="" step="0.01" disabled/>
+                            </div>
+                            <div class="form-group">
+                                <label for="cashgot">Cash received</label>
+                                <input v-model="cashgot" class="form-control" type="number" id="cashgot" step="0.01" autofocus />
+                            </div>
+                            <div class="form-group">
+                                <label for="change">Change</label>
+                                <input id="change" type="number" class="form-control" :value="cashgot - order.total_price" disabled/>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @click="payed('cash');" data-dismiss="modal" v-on:click="cashgot <= order.total_price">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Logout modal -->
+        <div class="modal" id="logoutmodal" tabindex="-1" role="dialog" aria-labelledby="clearModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Are you sure you want to exit application?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{% url 'logout' %}" class="btn btn-success" type="button">Ok</a>
+                        <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	{% block scripts %}
+	<script type="text/javascript" src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/vue.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/app.js' %}"></script>
+	{% endblock %}
+</body>
+</html>

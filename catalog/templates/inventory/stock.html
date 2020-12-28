@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset=utf-8 />
+	   <title>Order id {{ order.id }} from {{ order.last_change }} | {% block title %}JKF-VICTORY LIMITED{% endblock %}</title>
+
+        {% block link %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+        {% endblock %}
+        {% block meta %}
+        <meta charset="utf-8">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
+        {% endblock %}
+
+        <style type="text/css">
+            @media print {
+                .no-print {
+                    display:none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-12">
+                    <h1>{{ company }}</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <p>
+                        <button type="button" class="btn btn-primary no-print" onclick="window.print();">Print</button>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Stock</th>
+                                <th scope="col">Stock Level</th>
+                                <th scope="col">Expired</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if list %}
+                            {% for product in list %}
+                            <tr>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.stock }}</td>
+                                <td>{{ product.stock_level }}</td>
+                                <td>{{ product.expired_field }}</td>
+                            </tr>
+                            {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

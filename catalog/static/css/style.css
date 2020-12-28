@@ -1,0 +1,85 @@
+body {
+    font-size: 14px;
+    font-family: "Roboto","Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
+    color: #333;
+}
+.bg-primary {
+	width: auto;
+	height: auto;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+    background-color: #417690 !important;
+    color: #ffc;
+	/*overflow: hidden;*/
+}
+.navbar-brand{
+	font-size: 20px;
+	line-height: 1.2;
+	font-weight: 300;
+	color: #f5dd5d !important;
+}
+.navbar-brand a:hover {
+    text-decoration: none;
+}
+
+.green{
+	background-color: #86ff4f;
+	border-color: #86ff4f;
+	color: #373438;
+}
+.yellow {
+	 background-color: #ffff4f;
+	 border-color: #ffff4f;
+	 color: #373438;
+}
+.orange {
+	 background-color: #f48709;
+	 border-color: #f48709;
+}
+.purple {
+	 background-color: #dd09f4;
+	 border-color: #dd09f4;
+}
+.black {
+	 background-color: #373438;
+	 border-color: #373438;
+}
+.pink {
+	 background-color: #fc5eff;
+	 border-color: #fc5eff;
+	 color: #373438;
+}
+.cyan {
+	 background-color: #43d3ca;
+	 border-color: #43d3ca;
+}
+.app-sidebar{
+	background: #417690 !important;
+	border-color: #428711 !important;
+}
+.app-sidebar__inner{
+	position: static;
+	height: auto;
+	overflow: initial !important;
+	z-index: 15;
+	width: 100%;
+	padding: 2px 1.5rem 1.5rem;
+	color: #fff;
+}
+.vertical-nav-menu{
+	margin: 0;
+	padding: 0;
+	position: relative;
+	list-style: none;
+}
+.app-sidebar__heading{
+	text-indent: -999em;
+	text-transform: uppercase;
+	font-size: .8rem;
+	margin: .75rem 0;
+	font-weight: bold;
+	color: #fff;
+	white-space: nowrap;
+	position: relative;
+}

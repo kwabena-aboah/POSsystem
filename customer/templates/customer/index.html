@@ -1,0 +1,32 @@
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="col-md-12 col-sm-12 col-lg-12">
+    	<h2>{{ title }}</h2>
+		<br>
+		<form action="{% url 'customer' %}" method="post" class="form">
+		  	{% csrf_token %}
+		  	{{ form.non_field_errors }}
+		  	<div class="wrapper form-control">
+		  		<label for="{{ form.name.id_for_label}}">Name</label>
+			  	{{ form.name }}<br>
+			  	<label for="{{ form.phone.id_for_label}}">Phone</label>
+			  	{{ form.phone }}<br>
+			  	<label for="{{ form.email.id_for_label}}">Email</label>
+			  	{{ form.email }}<br>
+			  	<label for="{{ form.orders.id_for_label}}">Orders</label>
+			  	{{ form.orders }}<br>
+			  	<label for="{{ form.amount_paid.id_for_label}}">Amount paid</label>
+			  	{{ form.amount_paid }}<br>
+			  	<label for="{{ form.amount_to_pay.id_for_label}}">Amount to pay</label>
+			  	{{ form.amount_to_pay }}<br>
+			  	<label for="{{ form.payment_status.id_for_label}}">Payment Status</label>
+			  	{{ form.payment_status }}<br>
+			  	<button name="submit" class="btn btn-danger">Submit</button>
+		  	</div>
+		  	
+		  </form>
+		</div>
+	</div>
+{% endblock %}

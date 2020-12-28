@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% block meta %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        {% endblock %}
+        <title>Order id {{ order.id }} from {{ order.last_change }} | {% block title %}JKF-VICTORY LIMITED{% endblock %}</title>
+        {% block link %}
+        <style type="text/css">
+            * {
+                font-size: 14px;
+                font-family: 'Times New Roman';
+            }
+
+            td,
+            th,
+            tr,
+            table {
+                border-top: 1px solid black;
+                border-collapse: collapse;
+            }
+
+            td.description,
+            th.description {
+                width: 75px;
+                max-width: 75px;
+            }
+
+            td.quantity,
+            th.quantity {
+                width: 75px;
+                max-width: 75px;
+                word-break: break-all;
+            }
+
+            td.price,
+            th.price {
+                width: 75px;
+                max-width: 75px;
+                word-break: break-all;
+            }
+
+            .centered {
+                text-align: center;
+                align-content: center;
+            }
+
+            .ticket {
+                width: 285px;
+                max-width: 285px;
+            }
+
+            img {
+                max-width: inherit;
+                width: inherit;
+            }
+
+            @media print {
+                .hidden-print,
+                .hidden-print * {
+                    display: none !important;
+                }
+            }
+            /*@media print {
+                .no-print {
+                    display:none;
+                }
+            }*/
+        </style>
+        {% endblock %}
+    </head>
+    <body>
+        <div class="ticket">
+            <p class="centered">{{ company }}
+                <br>{{ order.last_change }}
+                <br>Wholesale of Beverages & Mineral Water
+                <br>Kyebi-Opposite Total Filling Station
+                <br>Tel: +233(0)240115506
+                <br>Tel: +233(0)244444585
+                <br>Cashier: {{ user.username }}</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="quantity">Name</th>
+                        <th class="description">Price</th>
+                        <th class="price col">Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if list %}
+                    {% for product in list %}
+                    <tr>
+                        <td class="quantity">{{ product.name }}</td>
+                        <td class="description">{{ currency }}{{ product.price }}</td>
+                        <td class="price">{{ product.quantity }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                    <tr>
+                    <th class="price">Total</th>
+                    <td class="price">{{ currency }}{{ order.total_price }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="centered">Goods sold are not returnable<br>
+                Thanks for your purchase!
+                <br>Please come again!!!!</p>
+        </div>
+        <button id="btnPrint" class="hidden-print btn btn-primary">Print</button>
+        <script>
+            const $btnPrint = document.querySelector("#btnPrint");
+            $btnPrint.addEventListener("click", () => {
+                window.print();
+            });
+        </script>
+    </body>
+</html>

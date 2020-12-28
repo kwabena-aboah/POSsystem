@@ -1,0 +1,44 @@
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+	
+<div class="container-fluid">
+    <h2>{{ title }}</h2>
+    <div class="row">
+        <div class="col-md-10 col-sm-12 col-lg-10">
+            <div class="container">
+                <a href="{% url 'customer' %}" class="btn btn-warning" style="float:right;">Add Creditor</a><br>
+            </div><br>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Amount Paid</th>
+                        <th scope="col">Amount to Pay</th>
+                        <th scope="col">Payment Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for customer in customers %}
+                    <tr>
+                        <td>{{ customer.name }}</td>
+                        <td>{{ customer.phone }}</td>
+                        <td>{{ customer.email }}</td>
+                        <td>{{ customer.amount_paid }}</td>
+                        <td>{{ customer.amount_to_pay }}</td>
+                        <td>{{ customer.payment_status }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        No customer on credit!
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+    
+{% endblock %}
